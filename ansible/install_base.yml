@@ -1,0 +1,29 @@
+- hosts: all
+  become: yes
+  tasks:
+
+    - name: Update apt
+      apt:
+        update_cache: yes
+
+    - name: Install base packages
+      apt:
+        name:
+          - docker.io
+          - curl
+          - wget
+          - git
+          - apt-transport-https
+        state: present
+
+    - name: Enable docker
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
+
+    - name: Add devops to docker group
+      user:
+        name: devops
+        groups: docker
+        append: yes

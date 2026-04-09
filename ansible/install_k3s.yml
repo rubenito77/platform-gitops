@@ -1,0 +1,16 @@
+- hosts: k8s_master
+  become: yes
+  tasks:
+    - name: Install k3s server
+      shell: curl -sfL https://get.k3s.io | sh -
+
+- hosts: k8s_workers
+  become: yes
+  tasks:
+    - name: Get token from master
+      shell: cat /var/lib/rancher/k3s/server/node-token
+      register: token
+      delegate_to: 192.168.1.21
+
+    - name: Install k3s agent
+      shell: curl -sfL https://get.k3s.io | K3S_URL=https://192.168.1.21:6443 K3S_TOKEN={{ token.stdout }} sh -

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-harbor
+  namespace: platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-harbor
+  template:
+    metadata:
+      labels:
+        app: nginx-harbor
+    spec:
+      imagePullSecrets:
+        - name: harbor-creds
+      containers:
+        - name: nginx
+          image: 192.168.1.24/platform/nginx:v1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
