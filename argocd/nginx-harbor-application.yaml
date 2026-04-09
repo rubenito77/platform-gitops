@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx-harbor
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/rubenito77/platform-gitops.git
+    targetRevision: main
+    path: apps/nginx-harbor   # 👈 IMPORTANTE
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: platform       # 👈 IMPORTANTE
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
