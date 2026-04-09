@@ -1,0 +1,54 @@
+# =========================
+# OS / Editor
+# =========================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.tmp
+*.log
+
+# =========================
+# VSCode / IDEs
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# Python (por si usás scripts)
+# =========================
+__pycache__/
+*.pyc
+
+# =========================
+# Ansible
+# =========================
+*.retry
+
+# =========================
+# Kubernetes / Secrets
+# =========================
+# ⚠️ Nunca subir secretos reales
+secrets.yaml
+secret.yaml
+*.key
+*.crt
+*.pem
+
+# =========================
+# Terraform (futuro)
+# =========================
+.terraform/
+*.tfstate
+*.tfstate.backup
+
+# =========================
+# Docker
+# =========================
+.env
+
+# =========================
+# Archivos locales
+# =========================
+*.bak
+*.old
