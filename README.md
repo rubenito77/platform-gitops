@@ -14,12 +14,13 @@ Plataforma DevOps basada en GitOps + Observabilidad, desplegada sobre Kubernetes
 
 Incluye:
 
-⚙️ Infraestructura automatizada (Ansible)
-🔁 GitOps con ArgoCD
-📦 Registry privado (Harbor)
-🌐 Ingress con Traefik + TLS
-📊 Observabilidad completa (Prometheus + Grafana)
+⚙️ Infraestructura automatizada (Ansible)<br>
+🔁 GitOps con ArgoCD<br>
+📦 Registry privado (Harbor)<br>
+🌐 Ingress con Traefik + TLS<br>
+📊 Observabilidad completa (Prometheus + Grafana)<br>
 ☸️ Métricas de Kubernetes (kube-state-metrics)<br>
+<br>
 🏗️ Arquitectura
 ![Project Structure](docs/images/arquitectura.png)
 ## 📁 Estructura del proyecto
