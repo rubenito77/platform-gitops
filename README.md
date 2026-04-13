@@ -8,41 +8,35 @@
 
 
 
+🧠 Overview
 
+Plataforma DevOps basada en GitOps + Observabilidad, desplegada sobre Kubernetes (K3s).
 
+Incluye:
 
-
-
-🧠 Platform Engineering Lab (GitOps + Observability)
-
-Este proyecto implementa una plataforma moderna de DevOps basada en:
-
-GitOps
-Infraestructura como código
-Observabilidad
-Automatización end-to-end
-
-👉 Diseñado para simular un entorno real de producción.
-
-🎯 Objetivos del proyecto
-Implementar un flujo GitOps real con ArgoCD
-Desplegar aplicaciones desde un registry privado (Harbor)
-Exponer servicios vía Ingress + TLS
-Implementar observabilidad completa (Prometheus + Grafana)
-Versionar dashboards y configuración como código
-Automatizar la infraestructura desde cero
+⚙️ Infraestructura automatizada (Ansible)
+🔁 GitOps con ArgoCD
+📦 Registry privado (Harbor)
+🌐 Ingress con Traefik + TLS
+📊 Observabilidad completa (Prometheus + Grafana)
+☸️ Métricas de Kubernetes (kube-state-metrics)
 🏗️ Arquitectura
-⚙️ Stack tecnológico
-Componente	Tecnología
-Orquestación	K3s
-GitOps	ArgoCD
-Ingress	Traefik
-Registry	Harbor (HTTP)
-Monitoring	Prometheus
-Visualization	Grafana
-Metrics K8s	kube-state-metrics
-IaC	Ansible
-📁 Estructura del repositorio
+flowchart TD
+
+A[GitHub Repo] --> B[ArgoCD]
+B --> C[Kubernetes K3s]
+
+C --> D[Traefik Ingress]
+
+D --> E[Nginx App]
+D --> F[Grafana]
+D --> G[Prometheus]
+
+G --> H[kube-state-metrics]
+F --> G
+
+C --> I[Harbor Registry]
+📁 Estructura del proyecto
 platform/
 ├── ansible/
 ├── bootstrap/
@@ -51,92 +45,96 @@ platform/
 │   └── monitoring/
 ├── argocd/
 ├── certs/
+├── .gitignore
 └── README.md
-🔁 Flujo GitOps
-Code → Git Push → ArgoCD Sync → Kubernetes Apply → Runtime
+⚙️ GitOps Workflow
+Git push → ArgoCD detecta → Sync automático → Kubernetes aplica
 
 ✔ Declarativo
-✔ Reproducible
 ✔ Automatizado
+✔ Sin intervención manual
 
-📦 Aplicaciones desplegadas
-🔹 Nginx
+📦 Aplicación de ejemplo
+nginx-harbor
 image: 192.168.1.24/platform/nginx:v1
-🔹 Monitoring Stack
-Prometheus
-Grafana
-kube-state-metrics
+
+Incluye:
+
+Deployment
+Service (ClusterIP)
+Ingress (Traefik)
+TLS self-signed
 🌐 Accesos
 Servicio	URL
 Nginx	https://nginx.platform.local:31788
-
 Grafana	https://grafana.platform.local:31788
-
 Prometheus	https://prometheus.platform.local:31788
 📊 Observabilidad
-Prometheus
+🔹 Prometheus
 
 Recolecta métricas de:
 
 Kubernetes
 kube-state-metrics
+🔹 kube-state-metrics
 
-Ejemplo:
+Expone métricas como:
 
 kube_pod_info
 kube_deployment_status_replicas
-Grafana
+kube_node_info
+🔹 Grafana
 Datasource: Prometheus
-Dashboards gestionados por Git
-Provisioning automático vía ConfigMaps
-📊 Dashboards as Code
+Dashboards gestionados por GitOps
+Provisioning automático vía ConfigMap
+📊 Dashboards
 
-Los dashboards están versionados en Git:
-
-apps/monitoring/grafana-dashboard-k8s.yaml
-
-Se cargan automáticamente desde:
+Carga automática desde:
 
 /var/lib/grafana/dashboards
+
+Provider:
+
+/etc/grafana/provisioning/dashboards
+
+⚠️ Requiere restart del pod para aplicar cambios
+
 🔐 Seguridad
 TLS self-signed
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
   -keyout tls.key \
   -out tls.crt \
   -subj "/CN=*.platform.local/O=platform-lab"
-Harbor
+Harbor (HTTP)
 docker login 192.168.1.24
-🚀 Quick Start
-1. Provisioning
-ansible-playbook -i ansible/hosts.ini ansible/install_base.yml
-ansible-playbook -i ansible/hosts.ini ansible/install_k3s.yml
-2. Bootstrap ArgoCD
-kubectl apply -f bootstrap/argocd/argocd-nodeport.yaml
-3. Deploy Apps
-kubectl apply -f argocd/
-🧪 Validaciones
+🔍 Validaciones
 kubectl get pods -A
+kubectl get svc -A
 kubectl get ingress -A
 kubectl get applications -n argocd
-📈 Resultados
-✔ GitOps funcionando end-to-end
-✔ Observabilidad integrada
-✔ Dashboards versionados
-✔ Infraestructura reproducible
-💡 Buenas prácticas
-Git como única fuente de verdad
-No subir secretos
-Evitar latest
-Namespaces por aplicación
+🧪 Testing
+curl -k https://nginx.platform.local:31788
+curl -k https://grafana.platform.local:31788
+curl -k https://prometheus.platform.local:31788
+🧠 Networking
+Internal: 192.168.58.x
+External: 192.168.1.x
+💡 Best Practices
+Git como fuente de verdad
+No versionar secretos
+Versionar imágenes (no latest)
+Namespaces por app
 Todo vía GitOps
 📌 Roadmap
-Node Exporter
+Node Exporter (infra metrics)
+Kubernetes Dashboard PRO
 Alertmanager
 Keycloak (SSO)
-cert-manager
+cert-manager (TLS real)
 Vault / External Secrets
-Multi-entorno
+Multi-env (dev / uat / prod)
+DNS real
 👨‍💻 Autor
 
 Ruben Macchi
-DevOps • Platform Engineer • Kubernetes
+DevOps • Kubernetes • Middleware
