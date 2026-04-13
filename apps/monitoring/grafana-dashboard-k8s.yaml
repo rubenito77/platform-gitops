@@ -153,74 +153,6 @@ data:
           ],
           "title": "Filesystem Usage /",
           "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 8
-          },
-          "id": 4,
-          "options": {
-            "legend": {
-              "displayMode": "table",
-              "placement": "bottom"
-            }
-          },
-          "targets": [
-            {
-              "expr": "node_load1",
-              "refId": "A",
-              "legendFormat": "{{instance}}"
-            }
-          ],
-          "title": "Load Average (1m)",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "unit": "bytes"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 12,
-            "y": 8
-          },
-          "id": 5,
-          "options": {
-            "legend": {
-              "displayMode": "table",
-              "placement": "bottom"
-            }
-          },
-          "targets": [
-            {
-              "expr": "node_memory_MemAvailable_bytes",
-              "refId": "A",
-              "legendFormat": "{{instance}}"
-            }
-          ],
-          "title": "Memory Available",
-          "type": "timeseries"
         }
       ],
       "refresh": "10s",
@@ -228,7 +160,6 @@ data:
       "style": "dark",
       "tags": [
         "node-exporter",
-        "kubernetes",
         "infrastructure"
       ],
       "templating": {
