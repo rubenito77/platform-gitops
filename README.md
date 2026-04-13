@@ -50,6 +50,7 @@ Servicio	URL<br>
 Nginx	https://nginx.platform.local:31788<br>
 Grafana	https://grafana.platform.local:31788<br>
 Prometheus	https://prometheus.platform.local:31788<br>
+<br>
 📊 Observabilidad<br>
 🔹 Prometheus<br>
 
