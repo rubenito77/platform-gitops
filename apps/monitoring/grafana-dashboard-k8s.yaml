@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-k8s
+  namespace: monitoring
+  labels:
+    grafana_dashboard: "1"
+data:
+  k8s-dashboard.json: |
+    {
+      "title": "Kubernetes Overview",
+      "schemaVersion": 36,
+      "version": 1,
+      "panels": [
+        {
+          "type": "timeseries",
+          "title": "Pods Running",
+          "targets": [
+            {
+              "expr": "count(kube_pod_info)",
+              "legendFormat": "pods"
+            }
+          ]
+        },
+        {
+          "type": "timeseries",
+          "title": "Deployments",
+          "targets": [
+            {
+              "expr": "kube_deployment_status_replicas",
+              "legendFormat": "{{deployment}}"
+            }
+          ]
+        }
+      ]
+    }
