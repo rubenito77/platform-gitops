@@ -19,7 +19,7 @@ Incluye:
 📦 Registry privado (Harbor)
 🌐 Ingress con Traefik + TLS
 📊 Observabilidad completa (Prometheus + Grafana)
-☸️ Métricas de Kubernetes (kube-state-metrics)
+☸️ Métricas de Kubernetes (kube-state-metrics)<br>
 🏗️ Arquitectura
 ![Project Structure](docs/images/arquitectura.png)
 ## 📁 Estructura del proyecto
@@ -44,77 +44,77 @@ Deployment
 Service (ClusterIP)
 Ingress (Traefik)
 TLS self-signed
-🌐 Accesos
-Servicio	URL
-Nginx	https://nginx.platform.local:31788
-Grafana	https://grafana.platform.local:31788
-Prometheus	https://prometheus.platform.local:31788
-📊 Observabilidad
-🔹 Prometheus
+🌐 Accesos<br>
+Servicio	URL<br>
+Nginx	https://nginx.platform.local:31788<br>
+Grafana	https://grafana.platform.local:31788<br>
+Prometheus	https://prometheus.platform.local:31788<br>
+📊 Observabilidad<br>
+🔹 Prometheus<br>
 
-Recolecta métricas de:
+Recolecta métricas de:<br>
 
-Kubernetes
-kube-state-metrics
-🔹 kube-state-metrics
+Kubernetes<br> 
+kube-state-metrics<br>
+🔹 kube-state-metrics<br>
 
-Expone métricas como:
+Expone métricas como:<br>
 
-kube_pod_info
-kube_deployment_status_replicas
-kube_node_info
-🔹 Grafana
-Datasource: Prometheus
-Dashboards gestionados por GitOps
-Provisioning automático vía ConfigMap
-📊 Dashboards
+kube_pod_info<br>
+kube_deployment_status_replicas<br>
+kube_node_info<br>
+🔹 Grafana<br>
+Datasource: Prometheus<br>
+Dashboards gestionados por GitOps<br>
+Provisioning automático vía ConfigMap<br>
+📊 Dashboards<br>
 
-Carga automática desde:
+Carga automática desde:<br>
 
-/var/lib/grafana/dashboards
+/var/lib/grafana/dashboards<br>
 
-Provider:
+Provider:<br>
 
-/etc/grafana/provisioning/dashboards
+/etc/grafana/provisioning/dashboards<br>
 
-⚠️ Requiere restart del pod para aplicar cambios
+⚠️ Requiere restart del pod para aplicar cambios<br>
 
-🔐 Seguridad
-TLS self-signed
+🔐 Seguridad<br>
+TLS self-signed<br>
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
   -keyout tls.key \
   -out tls.crt \
-  -subj "/CN=*.platform.local/O=platform-lab"
-Harbor (HTTP)
-docker login 192.168.1.24
-🔍 Validaciones
-kubectl get pods -A
-kubectl get svc -A
-kubectl get ingress -A
-kubectl get applications -n argocd
-🧪 Testing
-curl -k https://nginx.platform.local:31788
-curl -k https://grafana.platform.local:31788
-curl -k https://prometheus.platform.local:31788
-🧠 Networking
-Internal: 192.168.58.x
-External: 192.168.1.x
-💡 Best Practices
-Git como fuente de verdad
-No versionar secretos
-Versionar imágenes (no latest)
-Namespaces por app
-Todo vía GitOps
-📌 Roadmap
-Node Exporter (infra metrics)
-Kubernetes Dashboard PRO
-Alertmanager
-Keycloak (SSO)
-cert-manager (TLS real)
-Vault / External Secrets
-Multi-env (dev / uat / prod)
-DNS real
-👨‍💻 Autor
+  -subj "/CN=*.platform.local/O=platform-lab"<br>
+Harbor (HTTP)<br>
+docker login 192.168.1.24<br>
+🔍 Validaciones<br>
+kubectl get pods -A<br>
+kubectl get svc -A<br>
+kubectl get ingress -A<br>
+kubectl get applications -n argocd<br>
+🧪 Testing<br>
+curl -k https://nginx.platform.local:31788<br>
+curl -k https://grafana.platform.local:31788<br>
+curl -k https://prometheus.platform.local:31788<br>
+🧠 Networking<br>
+Internal: 192.168.58.x<br>
+External: 192.168.1.x <br>
+💡 Best Practices<br>
+Git como fuente de verdad<br>
+No versionar secretos<br>
+Versionar imágenes (no latest)<br>
+Namespaces por app<br>
+Todo vía GitOps<br>
+📌 Roadmap<br>
+Node Exporter (infra metrics)<br>
+Kubernetes Dashboard PRO<br>
+Alertmanager<br>
+Keycloak (SSO)<br>
+cert-manager (TLS real)<br>
+Vault / External Secrets<br>
+Multi-env (dev / uat / prod)<br>
+DNS real<br>
+👨‍💻 Autor<br>
 
-Ruben Macchi
-DevOps • Kubernetes • Middleware
+Ruben Macchi<br>
+DevOps • Kubernetes • Middleware<br>
