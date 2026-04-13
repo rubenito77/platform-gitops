@@ -64,10 +64,12 @@ Expone métricas como:<br>
 kube_pod_info<br>
 kube_deployment_status_replicas<br>
 kube_node_info<br>
+<br>
 🔹 Grafana<br>
 Datasource: Prometheus<br>
 Dashboards gestionados por GitOps<br>
 Provisioning automático vía ConfigMap<br>
+<br>
 📊 Dashboards<br>
 
 Carga automática desde:<br>
