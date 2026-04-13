@@ -21,22 +21,7 @@ Incluye:
 📊 Observabilidad completa (Prometheus + Grafana)
 ☸️ Métricas de Kubernetes (kube-state-metrics)
 🏗️ Arquitectura
-flowchart TD
-
-A[GitHub Repo] --> B[ArgoCD]
-B --> C[Kubernetes K3s]
-
-C --> D[Traefik Ingress]
-
-D --> E[Nginx App]
-D --> F[Grafana]
-D --> G[Prometheus]
-
-G --> H[kube-state-metrics]
-F --> G
-
-C --> I[Harbor Registry]
-
+![Project Structure](docs/images/arquitectura.png)
 ## 📁 Estructura del proyecto
 
 ![Project Structure](docs/images/structure.png)
