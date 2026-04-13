@@ -1,152 +1,162 @@
-# 🚀 Platform GitOps Lab
+🚀 Platform GitOps Lab
 
-Repositorio GitOps para una plataforma DevOps basada en:
 
-- Kubernetes (K3s)
-- ArgoCD (GitOps)
-- Harbor (Container Registry - HTTP)
-- Traefik (Ingress Controller)
-- TLS (self-signed)
-- Ansible (Provisioning)
 
----
 
-## 🧠 Arquitectura
 
-```text
-GitHub (source of truth)
-        ↓
-ArgoCD (GitOps controller)
-        ↓
-Kubernetes (K3s cluster)
-        ↓
-Traefik (Ingress)
-        ↓
-Applications (nginx, futuras apps)
-        ↑
-Harbor (container registry)
+
+
+
+
+
+🧠 Platform Engineering Lab (GitOps + Observability)
+
+Este proyecto implementa una plataforma moderna de DevOps basada en principios de:
+
+GitOps
+Infraestructura como código
+Observabilidad
+Automatización end-to-end
+
+👉 Diseñado para simular un entorno real de producción.
+
+🎯 Objetivos del proyecto
+Implementar un flujo GitOps real con ArgoCD
+Desplegar aplicaciones desde un registry privado (Harbor)
+Exponer servicios vía Ingress + TLS
+Implementar observabilidad completa (Prometheus + Grafana)
+Versionar dashboards y configuración como código
+Automatizar la infraestructura desde cero
+🏗️ Arquitectura
+flowchart TD
+
+Dev[Developer Push] --> Git[GitHub Repo]
+
+Git --> Argo[ArgoCD]
+Argo --> K8s[Kubernetes K3s Cluster]
+
+K8s --> Ingress[Traefik Ingress]
+
+Ingress --> App[Nginx App]
+Ingress --> Grafana[Grafana UI]
+Ingress --> Prometheus[Prometheus UI]
+
+Prometheus --> Metrics[kube-state-metrics]
+Grafana --> Prometheus
+
+K8s --> Harbor[Harbor Registry]
+⚙️ Stack tecnológico
+Componente	Tecnología
+Orquestación	K3s
+GitOps	ArgoCD
+Ingress	Traefik
+Registry	Harbor (HTTP)
+Monitoring	Prometheus
+Visualization	Grafana
+Metrics K8s	kube-state-metrics
+IaC	Ansible
 📁 Estructura del repositorio
 platform/
 ├── ansible/                  # Provisioning de infraestructura
-│   ├── hosts.ini
-│   ├── install_base.yml
-│   └── install_k3s.yml
-│
-├── bootstrap/               # Bootstrapping del cluster
-│   └── argocd/
-│       └── argocd-nodeport.yaml
-│
-├── apps/                    # Aplicaciones gestionadas por ArgoCD
-│   └── nginx-harbor/
-│       ├── namespace.yaml
-│       ├── deployment.yaml
-│       ├── service.yaml
-│       └── ingress.yaml
-│
-├── argocd/                  # Definición de Applications
-│   └── nginx-harbor-application.yaml
-│
-├── certs/                   # (NO versionado) certificados TLS
-├── .gitignore
+├── bootstrap/               # Bootstrapping (ArgoCD)
+├── apps/
+│   ├── nginx-harbor/        # Aplicación de ejemplo
+│   └── monitoring/          # Observabilidad completa
+├── argocd/                  # Applications GitOps
+├── certs/                   # Certificados (no versionado)
 └── README.md
-⚙️ Flujo GitOps
-Se realiza un cambio en Git
-ArgoCD detecta el cambio
-ArgoCD sincroniza automáticamente el cluster
-Kubernetes aplica los manifests
+🔁 Flujo GitOps
+Code → Git Push → ArgoCD Sync → Kubernetes Apply → Runtime
 
-👉 No usar kubectl apply manualmente en producción
+✔ Declarativo
+✔ Reproducible
+✔ Automatizado
 
-📦 Aplicación: nginx-harbor
-
-Despliegue de ejemplo usando imagen almacenada en Harbor:
-
+📦 Aplicaciones desplegadas
+🔹 Nginx (demo app)
 image: 192.168.1.24/platform/nginx:v1
+🔹 Monitoring Stack
+Prometheus
+Grafana
+kube-state-metrics
+🌐 Accesos
+Servicio	URL
+Nginx	https://nginx.platform.local:31788
+Grafana	https://grafana.platform.local:31788
+Prometheus	https://prometheus.platform.local:31788
+📊 Observabilidad
+Prometheus
 
-Incluye:
+Recolecta métricas de:
 
-Deployment
-Service (ClusterIP)
-Ingress (Traefik)
+Kubernetes cluster
+kube-state-metrics
+
+Ejemplo:
+
+kube_pod_info
+kube_deployment_status_replicas
+Grafana
+Datasource: Prometheus
+Dashboards gestionados por Git
+Provisioning automático vía ConfigMaps
+📊 Dashboards as Code
+Grafana dashboards = versionados en Git
+
+Ubicación:
+
+apps/monitoring/grafana-dashboard-k8s.yaml
+
+Provisioning:
+
+/etc/grafana/provisioning/dashboards
+🔐 Seguridad
 TLS self-signed
-🌐 Acceso a la aplicación
-HTTP
-http://nginx.platform.local:32266
-HTTPS
-https://nginx.platform.local:31788
-
-⚠️ El certificado es self-signed, el navegador mostrará advertencia.
-
-🔐 Certificado TLS (self-signed)
-
-Generación:
-
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
   -keyout tls.key \
   -out tls.crt \
-  -subj "/CN=nginx.platform.local/O=platform-lab"
-
-Creación del secret:
-
-kubectl create secret tls nginx-harbor-tls \
-  -n platform \
-  --cert=tls.crt \
-  --key=tls.key
-🔐 Secret de Harbor
-
-⚠️ No versionado en Git
-
-kubectl create namespace platform
-
-kubectl create secret docker-registry harbor-creds \
-  -n platform \
-  --docker-server=192.168.1.24 \
-  --docker-username=admin \
-  --docker-password='Harbor12345' \
-  --docker-email='admin@local'
-🚀 Despliegue con ArgoCD
-
-Aplicar Application:
-
-kubectl apply -f argocd/nginx-harbor-application.yaml -n argocd
-
-Ver estado:
-
+  -subj "/CN=*.platform.local/O=platform-lab"
+Harbor Registry
+docker login 192.168.1.24
+🚀 Quick Start (lab reproducible)
+1. Provisioning
+ansible-playbook -i ansible/hosts.ini ansible/install_base.yml
+ansible-playbook -i ansible/hosts.ini ansible/install_k3s.yml
+2. Bootstrap ArgoCD
+kubectl apply -f bootstrap/argocd/argocd-nodeport.yaml
+3. Deploy Apps (GitOps)
+kubectl apply -f argocd/
+🧪 Validaciones
+kubectl get pods -A
+kubectl get ingress -A
 kubectl get applications -n argocd
-🔍 Validaciones
-kubectl get pods -n platform
-kubectl get svc -n platform
-kubectl get ingress -n platform
-kubectl describe ingress nginx-harbor -n platform
-🧪 Pruebas
-HTTP
-curl http://nginx.platform.local:32266
-HTTPS
-curl -k https://nginx.platform.local:31788
-🧠 Red del cluster
-Internal network: 192.168.58.x
-External network (bridge): 192.168.1.x
-
-Configuración:
-
-node-ip → red interna
-node-external-ip → red externa
-📌 Roadmap
- Ingress sin NodePort (puerto 80/443 limpio)
- cert-manager (TLS automático)
- Keycloak (SSO)
- Grafana + Prometheus
- External Secrets / Vault
- Helm / Kustomize
- Multi-entorno (dev / uat / prod)
- DNS real (en lugar de /etc/hosts)
-💡 Buenas prácticas
+📈 Resultados obtenidos
+✔ GitOps funcionando end-to-end
+✔ Aplicaciones desplegadas automáticamente
+✔ Observabilidad integrada
+✔ Dashboards versionados
+✔ Infraestructura reproducible
+💡 Buenas prácticas implementadas
 Git como única fuente de verdad
-No subir secretos al repositorio
-Usar namespaces por aplicación
-Versionar imágenes (evitar latest)
-Automatizar todo con ArgoCD
+Separación por namespaces
+Configuración declarativa
+Versionado de dashboards
+Automatización completa
+No uso de latest en imágenes
+📌 Roadmap
+Node Exporter (CPU/memoria real)
+Alertmanager
+Keycloak (SSO)
+cert-manager (TLS real)
+Vault / External Secrets
+Multi-cluster
+CI/CD pipeline (GitHub Actions)
+🧠 Lecciones clave
+- GitOps simplifica la operación
+- Observabilidad es fundamental desde el inicio
+- Todo debe ser declarativo
+- Kubernetes + GitOps = plataforma escalable
 👨‍💻 Autor
 
 Ruben Macchi
-DevOps / Middleware / Kubernetes
+DevOps • Platform Engineer • Kubernetes
