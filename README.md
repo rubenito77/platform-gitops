@@ -86,26 +86,32 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
   -keyout tls.key \
   -out tls.crt \
   -subj "/CN=*.platform.local/O=platform-lab"<br>
+<br>
 Harbor (HTTP)<br>
 docker login 192.168.1.24<br>
+<br>
 🔍 Validaciones<br>
 kubectl get pods -A<br>
 kubectl get svc -A<br>
 kubectl get ingress -A<br>
 kubectl get applications -n argocd<br>
+<br>
 🧪 Testing<br>
 curl -k https://nginx.platform.local:31788<br>
 curl -k https://grafana.platform.local:31788<br>
 curl -k https://prometheus.platform.local:31788<br>
+<br>
 🧠 Networking<br>
 Internal: 192.168.58.x<br>
-External: 192.168.1.x <br>
+External: 192.168.1.x<br>
+<br>
 💡 Best Practices<br>
 Git como fuente de verdad<br>
 No versionar secretos<br>
 Versionar imágenes (no latest)<br>
 Namespaces por app<br>
 Todo vía GitOps<br>
+<br>
 📌 Roadmap<br>
 Node Exporter (infra metrics)<br>
 Kubernetes Dashboard PRO<br>
@@ -115,7 +121,8 @@ cert-manager (TLS real)<br>
 Vault / External Secrets<br>
 Multi-env (dev / uat / prod)<br>
 DNS real<br>
+<br>
 👨‍💻 Autor<br>
 
-Ruben Macchi<br>
+Rubinho<br>
 DevOps • Kubernetes • Middleware<br>
