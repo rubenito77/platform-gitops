@@ -36,17 +36,12 @@ G --> H[kube-state-metrics]
 F --> G
 
 C --> I[Harbor Registry]
-📁 Estructura del proyecto
-platform/
-├── ansible/
-├── bootstrap/
-├── apps/
-│   ├── nginx-harbor/
-│   └── monitoring/
-├── argocd/
-├── certs/
-├── .gitignore
-└── README.md
+
+## 📁 Estructura del proyecto
+
+![Project Structure](docs/images/structure.png)
+
+
 ⚙️ GitOps Workflow
 Git push → ArgoCD detecta → Sync automático → Kubernetes aplica
 
