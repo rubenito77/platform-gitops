@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: coroot
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://coroot.github.io/helm-charts
+    chart: coroot-ce
+    targetRevision: "*"
+    helm:
+      values: |
+        clickhouse:
+          shards: 1
+          replicas: 1
+
+        prometheus:
+          enabled: true
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: coroot
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

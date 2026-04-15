@@ -1,0 +1,51 @@
+global:
+  clusterName: platform-gitops-lab
+
+coroot:
+  service:
+    type: ClusterIP
+    port: 8080
+
+  ingress:
+    enabled: true
+    className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    hosts:
+      - host: coroot.platform.local
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: platform-tls
+        hosts:
+          - coroot.platform.local
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+prometheus:
+  url: http://prometheus.monitoring.svc:9090
+
+agent:
+  enabled: true
+  privileged: true
+  tolerations:
+    - operator: Exists
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 300m
+      memory: 256Mi
+
+nodeSelector: {}
+
+securityContext:
+  runAsNonRoot: false
